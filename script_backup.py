@@ -3,9 +3,7 @@ import errno, os, winreg
 from string import Template
 
 aKey = r"SOFTWARE\Microsoft\MSSQLServer\Client"
-database_list = "2019-12-10.txt"
-#source_directory = "C:\\profili\\U382332\\Desktop\\Script backup sharepoint\\"
-#source_directory = r"C:\profili\U382332\Desktop\Script backup sharepoint"
+database_list = "db_list.txt"
 
 # (STEP 1) - Reading Registry Key
 
@@ -31,52 +29,52 @@ for i in range(0, winreg.QueryInfoKey(subkey_connect_to)[1]):
 #print(registry_key_value)
 
 
-# # (STEP 2) - Reading file
-# shp_exp_file = open(database_list, "r")
-# i=0
+# (STEP 2) - Reading file
+shp_exp_file = open(database_list, "r")
+i=0
 
-# db_alias_dictionary = {}
-# for line in shp_exp_file:
-#     if(i != 0): #Skip first line
-#       kv = line.split(',') #Create key-value array
-#       db_name = kv[0].strip().replace("\"","")
-#       alias = kv[1].strip().replace("\"","")
+db_alias_dictionary = {}
+for line in shp_exp_file:
+    if(i != 0): #Skip first line
+      kv = line.split(',') #Create key-value array
+      db_name = kv[0].strip().replace("\"","")
+      alias = kv[1].strip().replace("\"","")
       
-#       solved_alias = ""
-#       try:
-#         index = list(registry_key_value.keys()).index(alias) 
-#         solved_alias = list(registry_key_value.values())[index]
-#       except:
-#         solved_alias = alias
-#         pass
+      solved_alias = ""
+      try:
+        index = list(registry_key_value.keys()).index(alias) 
+        solved_alias = list(registry_key_value.values())[index]
+      except:
+        solved_alias = alias
+        pass
 
-#       db_alias_dictionary[db_name] = solved_alias
-#     i+=1
-# shp_exp_file.close()
+      db_alias_dictionary[db_name] = solved_alias
+    i+=1
+shp_exp_file.close()
 
-# #[print(i,v) for i,v in db_alias_dictionary.items()]
+#[print(i,v) for i,v in db_alias_dictionary.items()]
 
 
-# # (STEP 3) - Prepare backup script
-# #DB_NAME = "CICCIO"   
-# #HOSTNAME = "VSQLPROD09"
-# #ISTANCE_NAME = "PROD_09"
+# (STEP 3) - Prepare backup script
+#DB_NAME required  
+#HOSTNAME required
+#ISTANCE_NAME required
 
-# template_env_file = open("template_env_script", "r")
-# file_string = template_env_file.read()
-# template_file_string = Template(file_string)
+template_env_file = open("template_env_script", "r")
+file_string = template_env_file.read()
+template_file_string = Template(file_string)
 
-# final_script = ""
-# for obj in db_alias_dictionary:
+final_script = ""
+for obj in db_alias_dictionary:
       
-#       db_name = obj.upper()
-#       hostname = db_alias_dictionary[obj].split('\\')[0].upper()
-#       instance_name = db_alias_dictionary[obj].split('\\')[1].upper()
+      db_name = obj.upper()
+      hostname = db_alias_dictionary[obj].split('\\')[0].upper()
+      instance_name = db_alias_dictionary[obj].split('\\')[1].upper()
       
-#       final_script += template_file_string.substitute(DB_NAME=db_name, HOSTNAME=hostname, ISTANCE_NAME=instance_name) + "\n\n"
-# print(final_script)
+      final_script += template_file_string.substitute(DB_NAME=db_name, HOSTNAME=hostname, ISTANCE_NAME=instance_name) + "\n\n"
 
-# # f = open("netbackup_script.bch", "a") #Create script file in local directory
-# # f.write("Now the file has more content!")
-# # f.close()
+
+# f = open("netbackup_script.bch", "a") #Create script file in local directory
+# f.write("Now the file has more content!")
+# f.close()
 
