@@ -1,7 +1,0 @@
-"Name","NormalizedDataSource"
-"S20Progetti","alias_shp"
-"S2_Content_Repository","alias_shp"
-"S2_WSS_Content","alias_shp"
-"S2_CentralAdmin","alias_shp"
-"S2_ShPoint_Config","alias_shp"
-"Logging","alias_shp"
